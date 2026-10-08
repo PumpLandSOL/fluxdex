@@ -87,7 +87,7 @@ Solana
 
 fluxdex.fun`],
 ];
-let bad = 0; const out = [`# FluxDEX · X kit\n\n**Site:** https://fluxdex.fun · **Ticker:** $FLUX · **Chain:** Solana\n\n## Bio (${[...BIO].length}/160)\n\`\`\`\n${BIO}\n\`\`\`\n\n## Tweets (all ≤245 chars)\n`];
+let bad = 0; const out = [`# FluxDEX · X kit\n\n**X:** @FluxDEXSOL (https://x.com/FluxDEXSOL) · **Site:** https://fluxdex.fun · **Ticker:** $FLUX · **Chain:** Solana\n\n## Bio (${[...BIO].length}/160)\n\`\`\`\n${BIO}\n\`\`\`\n\n## Tweets (all ≤245 chars)\n`];
 T.forEach(([n, a, t], i) => { const c = [...t].length; if (c > 245) bad++; console.log(String(i + 1).padStart(2), n.padEnd(20), c); out.push(`**${i + 1} · ${n}** (\`brand/${a}\`, ${c} chars)\n\`\`\`\n${t}\n\`\`\`\n`); });
 if ([...BIO].length > 160) { bad++; console.log('BIO', [...BIO].length); } if (bad) { console.log('OVER'); process.exit(1); }
 fs.writeFileSync(path.join(__dirname, '..', 'X-KIT.md'), out.join('\n')); console.log('wrote X-KIT.md');

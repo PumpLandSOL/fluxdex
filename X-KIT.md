@@ -1,6 +1,6 @@
 # FluxDEX · X kit
 
-**Site:** https://fluxdex.fun · **Ticker:** $FLUX · **Chain:** Solana
+**X:** @FluxDEXSOL (https://x.com/FluxDEXSOL) · **Site:** https://fluxdex.fun · **Ticker:** $FLUX · **Chain:** Solana
 
 ## Bio (137/160)
 ```
