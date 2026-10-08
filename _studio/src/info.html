@@ -1,0 +1,43 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="_v.css">
+<style>.bar{position:absolute;bottom:0;border-radius:10px 10px 0 0}.lab{position:absolute;font-family:'JetBrains Mono';font-size:18px;color:#9aa6c4}</style>
+<body>
+<div style="position:absolute;left:60px;top:44px" class="m"><span style="color:#00f0ff;font-size:16px;letter-spacing:.2em">HOW FLUXDEX STAYS SOLVENT</span></div>
+<div class="c" id="s0"><div><div class="d" style="font-size:58px;font-weight:800;line-height:1.1">The <span class="g">percolator</span> engine</div><div style="font-size:24px;color:#9aa6c4;margin-top:20px">three rules · 30 seconds</div></div></div>
+<!-- rule 1: haircut -->
+<div id="s1" style="position:absolute;inset:0">
+ <div style="position:absolute;left:60px;top:110px;width:520px"><div class="m" style="color:#5b6685;font-size:18px">01 / HAIRCUT</div><div class="d" style="font-size:44px;font-weight:800;margin-top:14px;line-height:1.1">Capital is senior.<br><span class="g">Profit is junior.</span></div><div style="font-size:21px;color:#9aa6c4;margin-top:22px;line-height:1.5" id="cap1">Everyone's collateral comes back first. Profit is paid from what's left.</div><div class="m card" style="margin-top:26px;padding:16px 18px;color:#00f0ff;font-size:18px">H = min(Residual, ΣPnL⁺) / ΣPnL⁺</div></div>
+ <div style="position:absolute;left:680px;top:130px;width:520px;height:440px">
+  <div class="bar" id="bc" style="left:30px;width:140px;background:#7b5cff"></div><div class="bar" id="bi" style="left:190px;width:140px;background:#00f0ff"></div><div class="bar" id="br" style="left:350px;width:140px;background:linear-gradient(#2dffa8,#1fcf86)"></div>
+  <div class="lab" style="left:30px;top:452px">capital</div><div class="lab" style="left:190px;top:452px">insurance</div><div class="lab" style="left:350px;top:452px">residual</div>
+  <div style="position:absolute;left:330px;width:180px;border-top:3px dashed #ff3df5" id="pl"></div><div class="m" id="plt" style="position:absolute;left:0;font-size:16px;color:#ff3df5;white-space:nowrap"></div>
+ </div>
+</div>
+<!-- rule 2: A/K/F -->
+<div id="s2" style="position:absolute;inset:0">
+ <div style="position:absolute;left:60px;top:110px;width:520px"><div class="m" style="color:#5b6685;font-size:18px">02 / A·K·F INDICES</div><div class="d" style="font-size:44px;font-weight:800;margin-top:14px;line-height:1.1">No queue.<br><span class="g">No ADL lottery.</span></div><div style="font-size:21px;color:#9aa6c4;margin-top:22px;line-height:1.5">One update per side. Every account reads its share instantly, so losses are shared pro-rata instead of hitting a random winner.</div><div class="m card" style="margin-top:26px;padding:16px 18px;color:#00f0ff;font-size:18px">K += A·ΔP &nbsp;·&nbsp; F ±= A·funding</div></div>
+ <div id="grid" style="position:absolute;left:700px;top:150px;display:grid;grid-template-columns:repeat(6,70px);gap:14px"></div>
+ <div class="d" id="side" style="position:absolute;left:700px;top:470px;font-size:24px;font-weight:600"></div>
+</div>
+<!-- rule 3: bounded crank -->
+<div id="s3" style="position:absolute;inset:0">
+ <div style="position:absolute;left:60px;top:110px;width:520px"><div class="m" style="color:#5b6685;font-size:18px">03 / BOUNDED CRANKS</div><div class="d" style="font-size:44px;font-weight:800;margin-top:14px;line-height:1.1">No single-tick<br><span class="g">blowups.</span></div><div style="font-size:21px;color:#9aa6c4;margin-top:22px;line-height:1.5">A bad print can only move the mark so far per slot. One spike can't liquidate the book.</div><div class="m card" style="margin-top:26px;padding:16px 18px;color:#00f0ff;font-size:18px">|ΔP|·1e4 ≤ max_move · Δt · P</div></div>
+ <svg style="position:absolute;left:680px;top:140px" width="540" height="420" viewBox="0 0 540 420"><path id="raw" stroke="#ff4d6d" stroke-width="3" fill="none" stroke-dasharray="6 6"/><path id="mark" stroke="#00f0ff" stroke-width="5" fill="none"/></svg>
+ <div class="m" style="position:absolute;left:690px;top:570px;font-size:16px"><span style="color:#ff4d6d">- - raw oracle tick</span> &nbsp; <span style="color:#00f0ff">— FluxDEX mark</span></div>
+</div>
+<div class="c" id="s4"><div><div class="d" style="font-size:54px;font-weight:800;line-height:1.15">Solvency isn't a promise.<br><span class="g">It's the math.</span></div><div class="m" style="font-size:22px;color:#9aa6c4;margin-top:26px">fluxdex.fun · $FLUX</div></div></div>
+<script>
+const $=(i)=>document.getElementById(i),cl=(x)=>Math.max(0,Math.min(1,x)),e=(x)=>1-Math.pow(1-cl(x),3),win=(t,a,b,f=.3)=>cl((t-a)/f)*cl((b-t)/f);
+$('grid').innerHTML=Array.from({length:18},(_,i)=>`<div id="a${i}" style="width:70px;height:70px;border-radius:14px;background:rgba(123,92,255,.25);border:1px solid rgba(140,170,255,.25)"></div>`).join('');
+const raw=[],N=60;for(let i=0;i<N;i++){let v=200+Math.sin(i/6)*40;if(i===34)v=20;if(i===35)v=380;raw.push(v);}
+const mark=[];let mp=raw[0];for(const v of raw){const lim=26;mp=mp+Math.max(-lim,Math.min(lim,v-mp));mark.push(mp);}
+const pth=(a,n)=>a.slice(0,n).map((v,i)=>(i?'L':'M')+(i/(N-1)*540).toFixed(1)+' '+v.toFixed(1)).join(' ');
+window.__seek=(t)=>{
+  $('s0').style.opacity=win(t,0,2.6);
+  $('s1').style.opacity=win(t,2.6,10.2);const p=e((t-3.2)/1.4);$('bc').style.height=(260*p)+'px';$('bi').style.height=(90*p)+'px';$('br').style.height=(170*e((t-4)/1.2))+'px';
+  const pr=e((t-6)/1.4)*120;$('pl').style.top=(440-pr)+'px';$("plt").style.top=(404-pr)+"px";$('plt').textContent=t>6?'open profit · paid in full (H = 100%)':'';$('pl').style.opacity=t>6?1:0;
+  $('s2').style.opacity=win(t,10.2,17.6);for(let i=0;i<18;i++){const w=e((t-11-i*.05)/.4);const hit=t>13.2?e((t-13.2)/.8):0;$('a'+i).style.opacity=w;$('a'+i).style.background=`rgba(${Math.round(123+132*hit)},${Math.round(92-30*hit)},${Math.round(255-150*hit)},${.25+.25*hit})`;}
+  $('side').innerHTML=t>13.2?'liquidation → A shrinks <span class="g">for the whole side</span>':'';
+  $('s3').style.opacity=win(t,17.6,25.2);const n=Math.max(2,Math.floor(e((t-18.3)/4.5)*N));$('raw').setAttribute('d',pth(raw,n));$('mark').setAttribute('d',pth(mark,n));
+  $('s4').style.opacity=e((t-25.2)/.5);
+};window.__seek(0);
+</script>

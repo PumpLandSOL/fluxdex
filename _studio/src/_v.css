@@ -1,0 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}body{width:1280px;height:720px;background:#05060a;color:#f2f6ff;font-family:Inter,sans-serif;overflow:hidden;position:relative}
+.d{font-family:Unbounded,sans-serif;letter-spacing:-.02em}.m{font-family:'JetBrains Mono',monospace}
+.g{background:linear-gradient(100deg,#00f0ff,#7b5cff 55%,#ff3df5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.card{background:rgba(14,18,32,.8);border:1px solid rgba(140,170,255,.16);border-radius:20px}
+#fld{position:absolute;inset:0}

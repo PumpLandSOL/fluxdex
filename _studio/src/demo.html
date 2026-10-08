@@ -1,0 +1,19 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="_v.css">
+<style>#stage{position:absolute;left:50px;top:30px;width:1180px;height:590px;overflow:hidden;border-radius:20px;border:1px solid rgba(140,170,255,.25);background:#05060a}
+#stage img{position:absolute;left:0;top:0;width:1180px;transform-origin:0 0}
+#cap{position:absolute;left:50px;right:50px;top:642px;display:flex;gap:18px;align-items:baseline}#n{font-family:'JetBrains Mono';font-size:14px;color:#00f0ff}#ct{font-size:26px;font-weight:600}
+#prog{position:absolute;left:0;bottom:0;height:4px;background:linear-gradient(90deg,#00f0ff,#7b5cff,#ff3df5)}.full{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:#05060a;z-index:9}</style>
+<body><div id="stage"></div><div id="cap"><span id="n"></span><span id="ct"></span></div><div id="prog"></div>
+<div class="full" id="intro"><div><div class="d" style="font-size:66px;font-weight:800">FLUX<span class="g">DEX</span></div><div class="m" style="font-size:18px;color:#9aa6c4;margin-top:20px;letter-spacing:.2em">PRODUCT WALKTHROUGH</div></div></div>
+<div class="full" id="outro"><div><div class="d" style="font-size:46px;font-weight:800">Perps that <span class="g">can't go insolvent.</span></div><div class="m" style="font-size:22px;color:#9aa6c4;margin-top:22px">fluxdex.fun · $FLUX</div></div></div>
+<script>
+const $=(i)=>document.getElementById(i),cl=(x)=>Math.max(0,Math.min(1,x)),e=(x)=>{x=cl(x);return x*x*(3-2*x)};
+const S=[[1.6,'01-landing','The landing: live prices, live solvency',[1,.5,.3]],[4.6,'02-markets','Pick from 8 majors, each with its own leverage cap',[1.4,.12,.3]],[7.8,'03-ticket','Size, leverage, entry, liquidation and fee before you confirm',[1.45,.87,.3]],[11,'04-position','Your position, live: PnL, liquidation and what you can withdraw',[1.35,.45,.68]],[14.2,'05-solvency','The engine in public: vault, insurance, residual and haircut H',[1.25,.45,.4]],[17.4,'06-docs','Every rule documented',[1.15,.4,.3]],[20.2]];
+const END=20.2,DUR=22.5,W=1180,H=590,IH=1180*860/1440;
+S.slice(0,-1).forEach((s,i)=>{const im=new Image();im.src='../shots/'+s[1]+'.png';im.id='i'+i;$('stage').appendChild(im);});
+const tf=(z,p)=>{const s=1+(z[0]-1)*p;let x=W/2-z[1]*W*s,y=H/2-z[2]*IH*s;x=Math.min(0,Math.max(W-W*s,x));y=Math.min(0,Math.max(H-IH*s,y));return `translate(${x}px,${y}px) scale(${s})`;};
+window.__seek=(t)=>{$('intro').style.opacity=1-e((t-1.2)/.4);$('outro').style.opacity=e((t-END)/.4);$('prog').style.width=(t/DUR*1280)+'px';let k=0;for(let i=0;i<S.length-1;i++)if(t>=S[i][0])k=i;
+S.slice(0,-1).forEach((s,i)=>{const im=$('i'+i);im.style.opacity=i<=k?e((t-s[0])/.35):0;im.style.zIndex=i;const len=S[i+1][0]-s[0];im.style.transform=tf(s[3],e((t-s[0]-.15)/(len*.65)));});
+$('n').textContent=String(k+1).padStart(2,'0')+' / 06';$('ct').textContent=S[k][2];$('cap').style.opacity=e((t-S[k][0])/.3)*(t<END?1:0);};
+window.__ready=Promise.all([...document.images].map((i)=>i.decode().catch(()=>0)));window.__seek(0);
+</script>

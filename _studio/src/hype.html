@@ -1,0 +1,23 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="_v.css">
+<body><canvas id="fld" width="1280" height="720"></canvas>
+<div class="c" id="s1"><div class="d" style="font-size:64px;font-weight:800;line-height:1.1">Most perp DEXs<br><span style="color:#9aa6c4">stay solvent on a promise.</span></div></div>
+<div class="c" id="s2"><div class="d" style="font-size:118px;font-weight:800;color:#ff4d6d" id="bad"></div></div>
+<div class="c" id="s3"><div class="d" style="font-size:76px;font-weight:800;line-height:1.08">FluxDEX runs on<br><span class="g">the math.</span></div></div>
+<div class="c" id="s4"><div style="width:100%"><div class="d" style="font-size:40px;font-weight:600;margin-bottom:36px" id="t4">8 majors · up to 50x</div><div id="row" style="display:flex;gap:16px;justify-content:center"></div></div></div>
+<div class="c" id="s5"><div><svg viewBox="0 0 40 40" style="width:150px"><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#00f0ff"/><stop offset=".55" stop-color="#7b5cff"/><stop offset="1" stop-color="#ff3df5"/></linearGradient></defs><path id="wv" d="M6 27c5-16 10-16 13 0s9 15 15-2" stroke="url(#lg)" stroke-width="5" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1"/></svg>
+<div class="d" style="font-size:72px;font-weight:800;margin-top:20px">FLUXDEX</div><div class="d" style="font-size:30px;margin-top:14px">Perps that <span class="g">can't go insolvent.</span></div><div class="m" style="font-size:22px;color:#9aa6c4;margin-top:20px">fluxdex.fun · $FLUX</div></div></div>
+<script>
+const $=(i)=>document.getElementById(i),cl=(x)=>Math.max(0,Math.min(1,x)),e=(x)=>1-Math.pow(1-cl(x),3),win=(t,a,b,f=.25)=>cl((t-a)/f)*cl((b-t)/f);
+const cv=$('fld'),x=cv.getContext('2d');let s=7;const r=()=>(s=(s*16807)%2147483647)/2147483647;const P=[];for(let i=0;i<260;i++)P.push([r()*1280,r()*720,r()]);const C=['0,240,255','123,92,255','255,61,245'];
+function field(t,int){x.fillStyle='#05060a';x.fillRect(0,0,1280,720);for(const p of P){let px=p[0],py=p[1];x.strokeStyle='rgba('+C[p[2]<.4?0:p[2]<.75?1:2]+','+(.45*int)+')';x.lineWidth=1.4;x.beginPath();x.moveTo(px,py);for(let k=0;k<22;k++){const a=Math.sin(px*.0032+t*.6)*1.6+Math.cos(py*.0042-t*.4)*1.4;px+=Math.cos(a)*7;py+=Math.sin(a)*7;x.lineTo(px,py);}x.stroke();}}
+const W=['ADL.','SOCIALIZED LOSSES.','BANK RUNS.'];const MK=[['BTC','50x'],['ETH','50x'],['SOL','50x'],['HYPE','25x'],['ZEC','20x'],['NEAR','20x'],['JUP','20x'],['PUMP','15x']];
+$('row').innerHTML=MK.map(([s,l],i)=>`<div class="card" id="k${i}" style="padding:18px 22px"><div class="d" style="font-size:26px;font-weight:600">${s}</div><div class="m" style="font-size:16px;color:#00f0ff;margin-top:6px">${l}</div></div>`).join('');
+window.__seek=(t)=>{
+  field(t,t<2.4?.35:t<4.8?.15:1);
+  $('s1').style.opacity=win(t,.2,2.4);
+  const k=Math.floor((t-2.4)/.8);$('s2').style.opacity=(t>=2.4&&t<4.8)?1:0;if(k>=0&&k<3){$('bad').textContent=W[k];const f=((t-2.4)%.8)/.8;$('bad').style.transform=`scale(${1.15-.15*e(f*3)})`;$('bad').style.filter=`blur(${(1-e(f*4))*10}px)`;}
+  $('s3').style.opacity=win(t,4.8,7);$('s3').firstElementChild.style.transform=`scale(${.9+.1*e((t-4.8)/.8)})`;
+  $('s4').style.opacity=win(t,7,10.2);MK.forEach((m,i)=>{const p=e((t-7.3-i*.12)/.4);$('k'+i).style.opacity=p;$('k'+i).style.transform=`translateY(${(1-p)*40}px)`;});
+  $('s5').style.opacity=e((t-10.2)/.4);$('wv').style.strokeDashoffset=1-e((t-10.3)/.9);
+};window.__seek(0);
+</script>
