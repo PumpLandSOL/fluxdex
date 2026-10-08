@@ -7,7 +7,7 @@ const rep = (x, y) => { if (!h.includes(x)) throw new Error('missing: ' + x.slic
 // head
 h = h.replace(/<title>[\s\S]*?<\/title>/, '<title>FluxDEX — trade</title>');
 h = h.replace(/<meta name="description"[^>]*>/, '<meta name="description" content="Trade BTC, ETH, SOL, HYPE, ZEC, NEAR, JUP and PUMP perps up to 50x on FluxDEX, run on the percolator risk engine.">');
-h = h.replace(/hoodliquiddex\.xyz/g, 'fluxdex.xyz').replace(/content="HOODLIQUID"/, 'content="FluxDEX"');
+h = h.replace(/hoodliquiddex\.xyz/g, 'fluxdex.fun').replace(/content="HOODLIQUID"/, 'content="FluxDEX"');
 h = h.replace(/<meta property="og:title"[^>]*>/, '<meta property="og:title" content="FluxDEX — perps that can\'t go insolvent">').replace(/<meta name="twitter:title"[^>]*>/, '<meta name="twitter:title" content="FluxDEX — perps that can\'t go insolvent">');
 h = h.replace(/<meta property="og:description"[^>]*>/, '<meta property="og:description" content="BTC, ETH, SOL, HYPE, ZEC, NEAR, JUP and PUMP perps on the percolator risk engine. $FLUX">');
 h = h.replace('family=Audiowide&', 'family=Unbounded:wght@400;600;800&');
