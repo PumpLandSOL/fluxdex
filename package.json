@@ -1,0 +1,13 @@
+{
+  "name": "hoodliquid",
+  "version": "1.0.0",
+  "description": "HoodLiquid ($HOOD) — a permissionless perps DEX on Robinhood Chain (percolator risk engine, Pyth oracles).",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

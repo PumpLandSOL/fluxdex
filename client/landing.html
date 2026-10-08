@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FluxDEX — perps that can't go insolvent</title>
+<meta name="description" content="FluxDEX: perpetual futures on BTC, ETH, SOL, HYPE, ZEC, NEAR, JUP and PUMP, run on the percolator risk engine. Up to 50x. Structural solvency, live prices, on Solana.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%2305060a'/%3E%3Cpath d='M9 27c5-14 9-14 11 0s7 13 11-1' stroke='%2300f0ff' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05060a;--ink:#f2f6ff;--dim:#9aa6c4;--mut:#5b6685;--line:rgba(140,170,255,.14);--card:rgba(14,18,32,.62);
+  --c1:#00f0ff;--c2:#7b5cff;--c3:#ff3df5;--up:#2dffa8;--down:#ff4d6d;--flux:linear-gradient(100deg,var(--c1),var(--c2) 55%,var(--c3))}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:Inter,sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+.disp{font-family:Unbounded,sans-serif;letter-spacing:-.02em}
+.mono{font-family:'JetBrains Mono',monospace}
+.grad{background:var(--flux);-webkit-background-clip:text;background-clip:text;color:transparent}
+#field{position:fixed;inset:0;z-index:0;opacity:.9}
+.vign{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 80% at 50% 0%,transparent 40%,var(--bg) 92%)}
+main,header,footer{position:relative;z-index:2}
+header{position:sticky;top:0;backdrop-filter:blur(16px);background:rgba(5,6,10,.55);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:28px;height:68px}
+.logo{display:flex;align-items:center;gap:12px;font-family:Unbounded;font-weight:800;font-size:19px;letter-spacing:.02em}
+.logo svg{width:30px;height:30px}
+.nav nav{display:flex;gap:26px;margin-left:12px;font-size:14px;color:var(--dim)}.nav nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15px;padding:13px 22px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);transition:.2s;cursor:pointer;color:var(--ink)}
+.btn:hover{border-color:rgba(140,170,255,.4);background:rgba(255,255,255,.08)}
+.btn.go{background:var(--flux);border:0;color:#05060a;font-weight:700;box-shadow:0 10px 40px rgba(0,240,255,.25)}.btn.go:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.nav .btn{margin-left:auto;padding:10px 18px;font-size:14px}
+/* ticker */
+.tick{border-bottom:1px solid var(--line);background:rgba(5,6,10,.6);overflow:hidden;white-space:nowrap}
+.tick .run{display:inline-block;padding:11px 0;animation:run 40s linear infinite;font-size:13px}
+.tick span{margin:0 26px;color:var(--dim)}.tick b{color:var(--ink);font-weight:600;margin:0 8px}.up{color:var(--up)}.dn{color:var(--down)}
+@keyframes run{to{transform:translateX(-50%)}}
+/* hero */
+.hero{min-height:calc(100vh - 110px);display:grid;align-items:center;padding:60px 0 40px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--dim);border:1px solid var(--line);padding:7px 14px;border-radius:99px;background:var(--card)}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--up);box-shadow:0 0 12px var(--up)}
+h1{font-size:clamp(46px,7.6vw,108px);line-height:.98;margin-top:26px;font-weight:800}
+.lead{font-size:clamp(17px,1.6vw,21px);color:var(--dim);max-width:640px;margin-top:26px}.lead b{color:var(--ink);font-weight:600}
+.cta{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:64px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--line)}
+.stat{background:rgba(8,10,18,.82);padding:22px 24px}.stat .l{font-size:12px;color:var(--mut);letter-spacing:.12em;text-transform:uppercase}.stat .v{font-family:Unbounded;font-size:28px;margin-top:8px}
+/* sections */
+section{padding:110px 0}
+.kick{font-family:'JetBrains Mono';font-size:13px;color:var(--c1);letter-spacing:.2em;text-transform:uppercase}
+h2{font-size:clamp(34px,4.6vw,62px);line-height:1.04;margin-top:16px;font-weight:800;max-width:900px}
+.sub{color:var(--dim);font-size:18px;max-width:640px;margin-top:18px}
+/* markets */
+.mk{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:46px}
+.m{position:relative;padding:22px;border-radius:20px;background:var(--card);border:1px solid var(--line);overflow:hidden;transition:.25s}
+.m:hover{transform:translateY(-4px);border-color:rgba(0,240,255,.4);box-shadow:0 20px 60px rgba(0,240,255,.1)}
+.m .top{display:flex;justify-content:space-between;align-items:center}.m .sym{font-family:Unbounded;font-weight:600;font-size:20px}.m .lev{font-family:'JetBrains Mono';font-size:12px;padding:4px 9px;border-radius:8px;background:rgba(0,240,255,.12);color:var(--c1)}
+.m .nm{font-size:13px;color:var(--mut);margin-top:2px}.m .px{font-family:Unbounded;font-size:24px;margin-top:18px}.m .ch{font-size:14px;margin-top:4px;font-weight:600}
+.m svg{position:absolute;left:0;right:0;bottom:0;width:100%;height:56px;opacity:.55}
+.m .tr{display:flex;gap:8px;margin-top:16px;position:relative}.m .tr a{flex:1;text-align:center;padding:8px;border-radius:10px;font-size:13px;font-weight:700}
+.m .tr .l{background:rgba(45,255,168,.12);color:var(--up)}.m .tr .s{background:rgba(255,77,109,.12);color:var(--down)}
+/* engine */
+.eng{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:50px}
+.e{padding:30px;border-radius:22px;background:var(--card);border:1px solid var(--line);position:relative;overflow:hidden}
+.e::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--flux)}
+.e .n{font-family:'JetBrains Mono';color:var(--mut);font-size:13px}.e h3{font-family:Unbounded;font-size:24px;margin-top:14px;font-weight:600}.e p{color:var(--dim);margin-top:12px;font-size:15px}
+.e code{display:block;margin-top:18px;font-family:'JetBrains Mono';font-size:13px;color:var(--c1);background:rgba(0,240,255,.07);padding:12px 14px;border-radius:12px;border:1px solid rgba(0,240,255,.16)}
+/* solvency */
+.solv{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;margin-top:30px}
+.gauge{position:relative;padding:40px;border-radius:28px;background:var(--card);border:1px solid var(--line)}
+.ring{width:260px;height:260px;margin:0 auto;position:relative}.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center}.ring .big{font-family:Unbounded;font-size:40px;font-weight:800}.ring .lb{font-size:13px;color:var(--mut);letter-spacing:.14em}
+.rows{margin-top:28px;display:grid;gap:10px}.rows div{display:flex;justify-content:space-between;font-size:15px;border-top:1px solid var(--line);padding-top:10px;color:var(--dim)}.rows b{color:var(--ink);font-family:'JetBrains Mono'}
+/* list */
+.lst{margin-top:36px;display:flex;gap:12px;max-width:760px;flex-wrap:wrap}
+.lst input{flex:1;min-width:260px;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;padding:15px 18px;color:var(--ink);font:500 15px 'JetBrains Mono'}
+.lst input:focus{outline:none;border-color:rgba(0,240,255,.5)}
+#lmsg{margin-top:14px;font-size:14px;color:var(--dim);min-height:22px}
+/* ca + cta */
+.ca{display:none;align-items:center;gap:14px;margin-top:28px;padding:12px 16px;border-radius:14px;background:var(--card);border:1px solid var(--line);max-width:640px}
+.ca .k{font-family:'JetBrains Mono';font-size:12px;color:var(--c1)}.ca code{font-family:'JetBrains Mono';font-size:13px;word-break:break-all;flex:1}
+.final{text-align:center;padding:130px 0}.final h2{margin:16px auto 0}.final .cta{justify-content:center}
+footer{border-top:1px solid var(--line);padding:30px 0;color:var(--mut);font-size:14px}footer .wrap{display:flex;gap:24px;flex-wrap:wrap}footer a:hover{color:var(--ink)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s,transform .8s}.reveal.on{opacity:1;transform:none}
+@media(max-width:960px){.mk{grid-template-columns:repeat(2,1fr)}.eng,.solv{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.nav nav{display:none}}
+@media(max-width:520px){.mk{grid-template-columns:1fr}.wrap{padding:0 18px}}
+</style>
+</head>
+<body>
+<canvas id="field"></canvas><div class="vign"></div>
+<header><div class="tick"><div class="run" id="tick">loading live prices…</div></div>
+<div class="wrap nav"><a class="logo" href="/"><svg viewBox="0 0 40 40"><defs><linearGradient id="fg" x1="0" x2="1"><stop offset="0" stop-color="#00f0ff"/><stop offset=".55" stop-color="#7b5cff"/><stop offset="1" stop-color="#ff3df5"/></linearGradient></defs><path d="M6 27c5-16 10-16 13 0s9 15 15-2" stroke="url(#fg)" stroke-width="5" fill="none" stroke-linecap="round"/></svg>FLUXDEX</a>
+<nav><a href="#markets">Markets</a><a href="#engine">Engine</a><a href="#solvency">Solvency</a><a href="/docs">Docs</a><a href="https://x.com/" id="xlink" target="_blank" rel="noopener">X</a></nav><a class="btn go" href="/app">Launch app →</a></div></header>
+<main>
+<div class="wrap hero"><div>
+  <span class="eyebrow"><i></i><span id="ey">live · Solana · percolator engine</span></span>
+  <h1 class="disp">Perps that<br><span class="grad">can&#39;t go insolvent.</span></h1>
+  <p class="lead">Trade <b>BTC, ETH, SOL, HYPE, ZEC, NEAR, JUP and PUMP</b> with up to <b>50x</b> leverage. FluxDEX runs on the <b>percolator</b> risk engine: profits are only ever paid from capital that actually exists. No socialized losses after the fact. No bank run.</p>
+  <div class="cta"><a class="btn go" href="/app">Start trading →</a><a class="btn" href="#engine">How the engine works</a></div>
+  <div class="ca" id="cabar"><span class="k">$FLUX CA</span><code id="ca-mint"></code><button class="btn" id="ca-copy" style="padding:8px 14px;font-size:13px">Copy</button></div>
+  <div class="stats"><div class="stat"><div class="l">Markets</div><div class="v" id="s-mk">—</div></div><div class="stat"><div class="l">Open interest</div><div class="v" id="s-oi">—</div></div><div class="stat"><div class="l">Max leverage</div><div class="v">50x</div></div><div class="stat"><div class="l">Exits backed</div><div class="v grad" id="s-h">—</div></div></div>
+</div></div>
+
+<section id="markets"><div class="wrap"><div class="reveal"><div class="kick">// markets</div><h2 class="disp">The majors. <span class="grad">Live.</span></h2><p class="sub">Every market marks to live prices, refreshed every 10 seconds. Leverage caps are set per market.</p></div><div class="mk" id="mk"></div></div></section>
+
+<section id="engine"><div class="wrap"><div class="reveal"><div class="kick">// the percolator engine</div><h2 class="disp">Solvency isn't a promise. <span class="grad">It's the math.</span></h2><p class="sub">FluxDEX runs a port of percolator, the risk engine from toly's open-source work. Three invariants keep the exchange whole.</p></div>
+<div class="eng">
+  <div class="e reveal"><div class="n">01 / HAIRCUT</div><h3>Capital is senior.</h3><p>Your collateral always comes back first. Profit is paid at a haircut H, so nobody can ever withdraw more value than sits on the balance sheet.</p><code>H = min(Residual, ΣPnL⁺) / ΣPnL⁺</code></div>
+  <div class="e reveal"><div class="n">02 / A·K·F INDICES</div><h3>No queues. No ADL lottery.</h3><p>Funding, marks and deleveraging settle through lazy per-side indices: every account updates in O(1), with nobody skipping the line.</p><code>K += A·ΔP &nbsp;·&nbsp; F ±= A·funding</code></div>
+  <div class="e reveal"><div class="n">03 / BOUNDED CRANKS</div><h3>No single-tick blowups.</h3><p>Each price update can only move the mark so far per slot. A bad tick or oracle spike can't liquidate the book in one shot.</p><code>|ΔP|·1e4 ≤ max_move · Δt · P</code></div>
+</div></div></section>
+
+<section id="solvency"><div class="wrap"><div class="solv">
+  <div class="reveal"><div class="kick">// live balance sheet</div><h2 class="disp">Watch the vault <span class="grad">in real time.</span></h2><p class="sub">The haircut, the vault, the insurance fund and every dollar of open profit, published live. If exits weren't fully backed, you'd see it here first.</p></div>
+  <div class="gauge reveal"><div class="ring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" stroke="rgba(140,170,255,.12)" stroke-width="10" fill="none"/><circle id="arc" cx="60" cy="60" r="52" stroke="url(#ag)" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="327"/><defs><linearGradient id="ag"><stop offset="0" stop-color="#00f0ff"/><stop offset="1" stop-color="#ff3df5"/></linearGradient></defs></svg><div class="c"><div><div class="big" id="g-h">—</div><div class="lb">EXITS BACKED (H)</div></div></div></div>
+  <div class="rows"><div><span>Vault</span><b id="g-v">—</b></div><div><span>Insurance fund</span><b id="g-i">—</b></div><div><span>Residual</span><b id="g-r">—</b></div><div><span>Open profit</span><b id="g-p">—</b></div></div></div>
+</div></div></section>
+
+<section id="list"><div class="wrap reveal"><div class="kick">// permissionless</div><h2 class="disp">Want another market? <span class="grad">List it.</span></h2><p class="sub">Paste any Solana token mint with real liquidity. FluxDEX prices it live and opens a perp market, with leverage capped by how deep the pool is.</p>
+<div class="lst"><input id="laddr" placeholder="Solana token mint…" spellcheck="false"><button class="btn go" id="lgo">List market</button></div><div id="lmsg"></div></div></section>
+
+<section class="final"><div class="wrap reveal"><div class="kick">// fluxdex</div><h2 class="disp">Trade the majors on an engine <span class="grad">built to stay whole.</span></h2><div class="cta"><a class="btn go" href="/app">Launch app →</a><a class="btn" href="/docs">Read the docs</a></div></div></section>
+</main>
+<footer><div class="wrap"><span>FluxDEX · percolator risk engine · Solana</span><a href="/app">App</a><a href="/docs">Docs</a><a href="https://x.com/" id="xlink2" target="_blank" rel="noopener">X</a></div></footer>
+<script>
+// ---- flux field: flowing particle lines across a noise field ----
+(function(){const c=document.getElementById('field'),x=c.getContext('2d');let W,H,P=[];const N=window.innerWidth<700?260:620;
+function rs(){W=c.width=innerWidth*devicePixelRatio;H=c.height=innerHeight*devicePixelRatio;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';x.fillStyle='#05060a';x.fillRect(0,0,W,H);}
+rs();addEventListener('resize',rs);
+for(let i=0;i<N;i++)P.push({x:Math.random()*W,y:Math.random()*H,h:Math.random()});
+const cols=['0,240,255','123,92,255','255,61,245'];let t=0;
+function f(px,py){return Math.sin(px*.0016+t*.25)*1.6+Math.cos(py*.0021-t*.18)*1.4+Math.sin((px+py)*.0009+t*.1);}
+(function loop(){t+=.016;x.fillStyle='rgba(5,6,10,.075)';x.fillRect(0,0,W,H);
+ for(const p of P){const a=f(p.x,p.y);const nx=p.x+Math.cos(a)*1.9*devicePixelRatio,ny=p.y+Math.sin(a)*1.9*devicePixelRatio;
+  x.strokeStyle='rgba('+cols[p.h<.4?0:p.h<.75?1:2]+',.55)';x.lineWidth=1.1*devicePixelRatio;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(nx,ny);x.stroke();p.x=nx;p.y=ny;
+  if(p.x<0||p.x>W||p.y<0||p.y>H||Math.random()<.004){p.x=Math.random()*W;p.y=Math.random()*H;}}
+ requestAnimationFrame(loop);})();})();
+// ---- reveal on scroll ----
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+// ---- live data ----
+const usd=(v)=>{v=+v||0;const a=Math.abs(v);return '$'+(a>=1e9?(v/1e9).toFixed(2)+'B':a>=1e6?(v/1e6).toFixed(2)+'M':a>=1e3?(v/1e3).toFixed(1)+'K':v.toFixed(0));};
+const fp=(p)=>'$'+(p>=1000?p.toLocaleString('en-US',{maximumFractionDigits:0}):p>=1?p.toFixed(2):p>=.01?p.toFixed(4):p.toPrecision(3));
+const HIST={};
+function spark(sym,px,up){const h=(HIST[sym]=HIST[sym]||[]);h.push(px);if(h.length>40)h.shift();if(h.length<2)return '';const mn=Math.min(...h),mx=Math.max(...h),r=mx-mn||1;const d=h.map((v,i)=>(i?'L':'M')+(i/(h.length-1)*300).toFixed(1)+' '+(52-(v-mn)/r*44).toFixed(1)).join(' ');return `<svg viewBox="0 0 300 56" preserveAspectRatio="none"><path d="${d}" fill="none" stroke="${up?'#2dffa8':'#ff4d6d'}" stroke-width="2"/></svg>`;}
+async function load(){try{
+  const mk=await fetch('/api/markets').then(r=>r.json());
+  document.getElementById('s-mk').textContent=mk.length;
+  document.getElementById('tick').innerHTML=[...mk,...mk].map(m=>`<span>${m.sym}<b>${fp(m.px)}</b><i class="${m.change>=0?'up':'dn'}">${m.change>=0?'+':''}${(+m.change).toFixed(2)}%</i></span>`).join('');
+  document.getElementById('mk').innerHTML=mk.map(m=>`<div class="m"><div class="top"><div><div class="sym">${m.sym}</div><div class="nm">${m.name||''}</div></div><span class="lev">${m.maxLev}x</span></div><div class="px">${fp(m.px)}</div><div class="ch ${m.change>=0?'up':'dn'}">${m.change>=0?'▲':'▼'} ${Math.abs(+m.change).toFixed(2)}% · funding ${(+m.funding).toFixed(4)}%</div><div class="tr"><a class="l" href="/app?m=${encodeURIComponent(m.sym)}&side=long">Long</a><a class="s" href="/app?m=${encodeURIComponent(m.sym)}&side=short">Short</a></div>${spark(m.sym,m.px,m.change>=0)}</div>`).join('');
+  const s=await fetch('/api/metrics').then(r=>r.json());
+  document.getElementById('s-oi').textContent=usd(s.oi);const h=(s.haircut*100);document.getElementById('s-h').textContent=h.toFixed(1)+'%';document.getElementById('g-h').textContent=h.toFixed(1)+'%';
+  document.getElementById('arc').setAttribute('stroke-dashoffset',(327*(1-s.haircut)).toFixed(1));
+  document.getElementById('g-v').textContent=usd(s.vault);document.getElementById('g-i').textContent=usd(s.insurance);document.getElementById('g-r').textContent=usd(s.residual);document.getElementById('g-p').textContent=usd(s.profit);
+  if(s.mint){document.getElementById('cabar').style.display='flex';document.getElementById('ca-mint').textContent=s.mint;}
+}catch(e){}}
+load();setInterval(load,10000);
+document.getElementById('ca-copy').onclick=()=>{navigator.clipboard.writeText(document.getElementById('ca-mint').textContent);document.getElementById('ca-copy').textContent='Copied';setTimeout(()=>document.getElementById('ca-copy').textContent='Copy',1400);};
+async function listToken(){const a=document.getElementById('laddr').value.trim(),m=document.getElementById('lmsg');if(!a)return;m.textContent='checking liquidity…';
+  const r=await fetch('/api/list',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({token:a})}).then(r=>r.json()).catch(()=>({error:'network error'}));
+  m.innerHTML=r.error?'<span class="dn">'+r.error+'</span>':'<span class="up">'+r.sym+(r.existed?' is already listed':' is live')+' · up to '+r.maxLev+'x</span> · <a href="/app?m='+encodeURIComponent(r.sym)+'" style="text-decoration:underline">trade it →</a>';if(!r.error)load();}
+document.getElementById('lgo').onclick=listToken;document.getElementById('laddr').addEventListener('keydown',e=>{if(e.key==='Enter')listToken();});
+</script>
+</body>
+</html>
