@@ -1,0 +1,19 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="_v.css">
+<body><canvas id="fld" width="1280" height="720"></canvas>
+<div class="c" id="s1"><div class="d" style="font-size:150px;font-weight:800" id="big"></div></div>
+<div class="c" id="s2"><div><div class="m" style="font-size:20px;color:#00f0ff;letter-spacing:.2em">PERCOLATOR ENGINE</div><div class="d" style="font-size:70px;font-weight:800;margin-top:18px;line-height:1.1">Capital first.<br><span class="g">Profit at H.</span></div></div></div>
+<div class="c" id="s3"><div><div class="d" style="font-size:60px;font-weight:800;line-height:1.15">No ADL queue.<br>No bank run.<br><span class="g">No single-tick blowup.</span></div></div></div>
+<div class="c" id="s4"><div><div class="d" style="font-size:96px;font-weight:800">FLUX<span class="g">DEX</span></div><div class="d" style="font-size:32px;margin-top:16px">8 majors · up to 50x · <span class="g">on the math</span></div><div class="m" style="font-size:22px;color:#9aa6c4;margin-top:22px">fluxdex.fun · $FLUX</div></div></div>
+<script>
+const $=(i)=>document.getElementById(i),cl=(x)=>Math.max(0,Math.min(1,x)),e=(x)=>1-Math.pow(1-cl(x),3),win=(t,a,b,f=.2)=>cl((t-a)/f)*cl((b-t)/f);
+const cv=$('fld'),x=cv.getContext('2d');let s=11;const r=()=>(s=(s*16807)%2147483647)/2147483647;const P=[];for(let i=0;i<300;i++)P.push([r()*1280,r()*720,r()]);const C=['0,240,255','123,92,255','255,61,245'];
+function field(t,int,sp){x.fillStyle='#05060a';x.fillRect(0,0,1280,720);for(const p of P){let px=p[0],py=p[1];x.strokeStyle='rgba('+C[p[2]<.4?0:p[2]<.75?1:2]+','+(.5*int)+')';x.lineWidth=1.4;x.beginPath();x.moveTo(px,py);for(let k=0;k<22;k++){const a=Math.sin(px*.003+t*sp)*1.7+Math.cos(py*.004-t*sp*.7)*1.4;px+=Math.cos(a)*7;py+=Math.sin(a)*7;x.lineTo(px,py);}x.stroke();}}
+const W=['BTC','ETH','SOL','HYPE','ZEC','NEAR','JUP','PUMP'];
+window.__seek=(t)=>{
+ field(t,t<4?.25:t<11?.7:1,t<4?2:.6);
+ $('s1').style.opacity=t<4?1:0;const k=Math.min(7,Math.floor(t/.5));$('big').innerHTML=k<7||t<3.5?'<span class="g">'+W[k]+'</span>':'';const f=(t%.5)/.5;$('big').style.transform=`scale(${1.2-.2*e(f*3)})`;$('big').style.filter=`blur(${(1-e(f*4))*8}px)`;
+ $('s2').style.opacity=win(t,4,7.2);$('s2').firstElementChild.style.transform=`scale(${.92+.08*e((t-4)/.8)})`;
+ $('s3').style.opacity=win(t,7.2,10.6);
+ $('s4').style.opacity=e((t-10.6)/.4);$('s4').firstElementChild.style.transform=`scale(${.9+.1*e((t-10.6)/.8)})`;
+};window.__seek(0);
+</script>
